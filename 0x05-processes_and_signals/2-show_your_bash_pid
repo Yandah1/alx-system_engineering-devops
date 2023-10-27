@@ -1,14 +1,4 @@
 #!/usr/bin/env bash
-# write a Bash script that displays lines containing the bash word,
-# shellcheck disable=SC2009
-pid=$(ps -ef | grep "[b]ash" | awk '{print $2}')
+#  Bash script that displays lines containing the bash word
 
-file_path="path/to/your/2-show_your_bash_pid"
-
-while IFS= read -r line; do
-  if [[ $line == *"bash"* ]]; then
-    echo "$line"
-  fi
-done < "$file_path"
-
-echo "PID of Bash process: $pid"
+./1-list_your_processes | grep "bash"
