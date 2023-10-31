@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Bash that groups visitots by IP and HTTP
+
+awk '{FS=" "; print $1,$9}' apache-access.log | sort | uniq -c | sort -gr
