@@ -3,9 +3,9 @@
 
 sudo apt-get update
 sudo apt-get -y install nginx
-sudo sh -ccho "Hello World!" > /var/www/html/index.nginx-debian.html
-sudo sh -c echo -e "Ceci n'est pas une page" > /var/www/html/error-page.html
-sudo sh -c echo "server {
+sudo sh -c echo "Hello World!" > /var/www/html/index.nginx-debian.html
+echo -e "Ceci n'est pas une page" > /var/www/html/error-page.html
+echo "server {
 		listen 80 default_server;
 	        listen [::]:80 default_server;
 		root /var/www/html;
@@ -20,4 +20,4 @@ sudo sh -c echo "server {
 			internal;
 		}
 	}" > /etc/nginx/sites-available/default
-sudo service nginx restarte
+service nginx restarte
