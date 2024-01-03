@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# configure Nginx server so that /redirect_me is redirecting to another page
+
+sudo apt-get update
+sudo apt-get -y install nginx
+sudo sh -ccho "Hello World!" > /var/www/html/index.nginx-debian.html
+sudo sh -c echo -e "Ceci n'est pas une page" > /var/www/html/error-page.html
+sudo sh -c echo "server {
+		listen 80 default_server;
+	        listen [::]:80 default_server;
+		root /var/www/html;
+		index index.html index.htm index.nginx-debian.html;
+		server_name _;
+		if (\$request_filename ~ redirect_me) {
+			rewrite ^ https://khennyyb.tech permanent;
+		}
+		error_page 404 /error-page.html;
+		location = /error-page.html{
+			root /var/www/html;
+			internal;
+		}
+	}" > /etc/nginx/sites-available/default
+sudo service nginx restarte
