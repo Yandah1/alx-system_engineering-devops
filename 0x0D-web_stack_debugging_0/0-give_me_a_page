@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# fixing docker container to return a page that contains Hello Holberton
+
+# connected to docker container to invastigate and fix 
+#docker exec -it CONTAINER_ID  bin/bash
+service apache2 restart
