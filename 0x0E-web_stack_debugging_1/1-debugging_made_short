@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Using what you did for task #0, make your fix short and sweet.
-netstat -lpn
-sed -i "s/8080/80/g" /etc/nginx/sites-enabled/default
+#netstat -lpn
+#sed -i "s/8080/80/g" /etc/nginx/sites-enabled/defauli
+sudo netstat -tuln | grep ':8 ' &> /dev/null
 service nginx restart
-echo "" > /run/nginx.pid
+#"echo "" > /run/nginx.pid
