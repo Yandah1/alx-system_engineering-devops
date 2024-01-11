@@ -7,12 +7,12 @@ function fetch_dns_config() {
 	echo "$2 $script" | awk '{print "The subdomain " $1 " is a " $2 " record and points to " $3}'
 }
 
-if [ -z "$subdomain" ]; then
+if [ "$#" == 1 ]; then
     
-    fetch_dns_config $domain www
-    fetch_dns_config $domain lb-01
-    fetch_dns_config $domain web-01
-    fetch_dns_config $domain web-02
-else
-    fetch_dns_config $domain $subdomain
+    fetch_dns_config "$1" www
+    fetch_dns_config "$1" lb-01
+    fetch_dns_config "$1" web-01
+    fetch_dns_config "$1" web-02
+elif [ "$#" == 2 ]; then
+    fetch_dns_config "$1" "$2"
 fi
