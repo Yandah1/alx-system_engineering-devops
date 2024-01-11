@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#Configure your domain zone so that the subdomain www points to your load-balancer IP (lb-01).
+#Displays information about subdomains
+
+domain=$1
+subdomain=$2
+
+function fetch_dns_info() {
+    local domain=$1
+    local subdomain=$2
+    local dns_info=$(dig +short $subdomain.$domain)
+    echo "The subdomain $subdomain is a $(echo $dns_info | awk '{ print $4 }') record and points to $(echo $dns_info | awk '{ print $1 }')"
+}
+
+if [ -z "$subdomain" ]; then
+    # Display information for default subdomains
+    fetch_dns_info $domain www
+    fetch_dns_info $domain lb-01
+    fetch_dns_info $domain web-01
+    fetch_dns_info $domain web-02
+else
+    # Display information for specified subdomain
+    fetch_dns_info $domain $subdomain
+fi
