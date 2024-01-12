@@ -33,12 +33,13 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
-frontend www-https
-        bind *:443 ssl crt /etc/letsencrypt/live/www.yandah1.tech/fullchain.pem
-        http-request add-header X-Forwarded-Proto https
-        default_backend www-backend
+frontend http_front
+        bind *:80
+        bind *:443 ssl crt /etc/haproxy/certs/www.yandah1.tech.pem
+        redirect scheme https code 301 if !{ ssl_fc }
+        default_backend http_back
 
-backend www-backend
+backend http_back
         balance roundrobin
         server 427687-web-01 54.165.52.121:80 check
         server 427687-web-02 34.204.81.17:80 check
