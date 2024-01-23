@@ -17,5 +17,7 @@ sed -i "s/80 /8080 /g" /etc/nginx/sites-available/default
 # Stop any Apache processes if they are running (optional, only if Apache is present)
 pkill -9 apache
 
+chmod 644 /etc/nginx/nginx.conf
+
 # Start Nginx
-service nginx start
+sudo -u nginx service nginx start
