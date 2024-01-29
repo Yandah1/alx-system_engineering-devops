@@ -20,14 +20,14 @@ if __name__ == '__main__':
             user_name = user_res.get('username')
             todos = list(filter(lambda x: x.get('userId') == id, todos_res))
             json_data = {
-                    str(id):[
+                    str(id): [
                         {
                             'task': todo.get('title'),
-                            'completed':todo.get('completed'),
+                            'completed': todo.get('completed'),
                             'username': user_name
                         }
                         for todo in todos
                         ]
                     }
             with open('{}.json'.format(id), 'w') as file:
-                json.dump(json_data,file)
+                json.dump(json_data, file)
