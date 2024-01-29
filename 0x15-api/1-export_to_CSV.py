@@ -1,41 +1,46 @@
 #!/usr/bin/python3
 '''Python script to export data in the CSV format.'''
-import sys
+
+import csv
 import re
 import requests
-import csv
+import sys
 
 
 API_URL = 'https://jsonplaceholder.typicode.com'
+'''The API's URL.'''
+
+
+def export_to_csv(user_id, user_name, todos):
+    filename = f"{user_id}.csv"
+    with open(filename, mode='w', newline='') as csv_file:
+        fieldnames = ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"]
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+        writer.writeheader()
+        for todo in todos:
+            writer.writerow({
+                "USER_ID": user_id,
+                "USERNAME": user_name,
+                "TASK_COMPLETED_STATUS": str(todo["completed"]),
+                "TASK_TITLE": todo["title"]
+            })
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         if re.fullmatch(r'\d+', sys.argv[1]):
-            id = int(sys.argv[1])
-            user_res = requests.get('{}/users/{}'.format(API_URL, id)).json()
-            todos_res = requests.get('{}/todos'.format(API_URL)).json()
+            user_id = int(sys.argv[1])
+            user_res = requests.get(f'{API_URL}/users/{user_id}').json()
+            todos_res = requests.get(f'{API_URL}/todos').json()
             user_name = user_res.get('name')
-            todos = list(filter(lambda x: x.get('userId') == id, todos_res))
+            todos = list(filter(lambda x: x.get('userId') == user_id, todos_res))
             todos_done = list(filter(lambda x: x.get('completed'), todos))
-            print(
-                'Employee {} is done with tasks({}/{}):'.format(
-                    user_name,
-                    len(todos_done),
-                    len(todos)
-                )
-            )
 
-            # Print the title of each completed task
+            print(f'Employee {user_name} is done with tasks({len(todos_done)}/{len(todos)}):')
             for todo_done in todos_done:
-                print('\t {}'.format(todo_done.get('title')))
-            # Export the data to a CSV file
-            filename = '{}.csv'.format(id)
-            with open(filename, 'w', newline='') as csvfile:
-                writer = csv.writer(csvfile)
-                writer.writerow(["USER_ID", "USERNAME",
-                                 "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-                for todo_done in todos_done:
-                    writer.writerow([id, user_name, "Completed",
-                                     todo_done.get('title')])
-            print('Data exported to {}'.format(filename))
+                print(f'\t {todo_done.get("title")}')
+            
+            # Export to CSV
+            export_to_csv(user_id, user_name, todos_done)
+            print(f'Data exported to {user_id}.csv')
