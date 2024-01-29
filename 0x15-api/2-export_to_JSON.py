@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 '''Python script to export data in the CSV format.'''
 
-import csv
+import json
 import re
 import requests
 import sys
-import json
 
 
 API_URL = 'https://jsonplaceholder.typicode.com'
